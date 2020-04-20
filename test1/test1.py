@@ -74,6 +74,8 @@ def test_1 ( ):
     plt.ylabel("Individuals")
     plt.grid()
     plt.legend()
+    fig_file = "test1.png"
+    plt.savefig(fig_file)
     plt.show()
 
     print ( '' )
