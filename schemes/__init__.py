@@ -1,2 +1,1 @@
-#from schemes.SI_react_diffusion_1d import run_test
-import schemes.SI_react_diffusion_1d as SI_react_diffusion_1d
+import schemes.SIR_react_diffusion_1d as SIR_react_diffusion_1d

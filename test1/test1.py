@@ -17,8 +17,12 @@
 #
 import numpy as np
 import matplotlib.pylab as plt
-import schemes.SI_react_diffusion_1d as SI_scheme
-from schemes.SI_react_diffusion_1d import test_name, run_test
+
+import sys
+sys.path.append("../") # El módulo está en el directorio superior
+import schemes.SIR_react_diffusion_1d as SIR_scheme
+from schemes.SIR_react_diffusion_1d import test_name, run_test
+
 #plt.style.use('seaborn-pastel')
 plt.style.use('seaborn-dark')
 plt.rcParams["figure.dpi"] = 300
@@ -26,7 +30,7 @@ plt.rcParams["figure.dpi"] = 300
 def test_1 ( ):
     from copy import copy
 
-    parameters = copy(SI_scheme.default_parameters)
+    parameters = copy(SIR_scheme.default_parameters)
     parameters["nx"] = 10
     parameters["dt"] = 1.e-2
     parameters["n_iter"] = 30
@@ -39,19 +43,21 @@ def test_1 ( ):
     print ( '  Implicit solver.' )
     print ( ' ', time.ctime ( time.time() ) )
 
-    plot_each_iteration = False
+    plot_all_iterations = False
     S_total = [] # Total number of susceptible at each time step
     I_total = [] # Total number of infected at each time step
-    for S, I in run_test ( parameters, plot_options={ "save": False } ):
-        s_array = S.get_local(); S_total.append(np.sum(s_array))
-        i_array = I.get_local(); I_total.append(np.sum(i_array))
+    R_total = [] # Total number of recovered at each time step
+    for S, I, R in run_test ( parameters, plot_options={ "save": False } ):
+        S_array = S.get_local(); S_total.append(np.sum(S_array))
+        I_array = I.get_local(); I_total.append(np.sum(I_array))
+        R_array = R.get_local(); R_total.append(np.sum(R_array))
         print(f"Total Susceptibles: {S_total[-1]}")
         print(f"Total Infectados  : {I_total[-1]}")
-        if plot_each_iteration:
+        print(f"Total Recovered   : {R_total[-1]}")
+        if plot_all_iterations:
             plt.plot(S, lw=2, label="Susceptibles")
             plt.plot(I, lw=2, label="Infectados")
-            SI = S+I
-            plt.plot(SI, lw=1, label="Suma I+S")
+            plt.plot(R, lw=1, label="Revovered")
 
             plt.legend()
             plt.grid()
@@ -60,9 +66,10 @@ def test_1 ( ):
     dt=parameters["dt"]
     nt=parameters["n_iter"]
     t_grid = np.linspace(0, nt*dt, nt+1)
-    plt.title("Evolution over time of S, I")
-    plt.plot(t_grid, S_total, lw=2, label="(S)usceptibles")
-    plt.plot(t_grid, I_total, lw=2, label="(I)nfected")
+    plt.title("Evolution over time of S, I, R")
+    plt.plot(t_grid, S_total, "-.", lw=2, label="(S)usceptibles")
+    plt.plot(t_grid, I_total, "-", lw=3, label="(I)nfected")
+    plt.plot(t_grid, R_total, "--", lw=2, label="(R)ecovered")
     plt.xlabel("Time")
     plt.ylabel("Individuals")
     plt.grid()
