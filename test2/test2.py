@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #
 # Resolución numérica del modelo SI+reacción+difusión
 #
@@ -22,8 +23,8 @@ import matplotlib.pylab as plt
 
 import sys
 sys.path.append("../") # El módulo está en el directorio superior
-import schemes.SIR_react_diffusion_2d as SIR_scheme
-from schemes.SIR_react_diffusion_2d import test_name, run_test
+import numepidem.SIR_react_diffusion_2d as SIR_scheme
+from numepidem.SIR_react_diffusion_2d import test_name, run_test
 
 #plt.style.use('seaborn-pastel')
 plt.style.use('seaborn-dark')

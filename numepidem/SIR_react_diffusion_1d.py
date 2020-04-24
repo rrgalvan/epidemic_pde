@@ -19,8 +19,8 @@ default_parameters = {
     "beta": 4.4333e-4 # infection rate
 }
 
-def plot_postprocess(plot_options, filename="out.png"):
-    print(f"  plotting {plot_options}, {filename}")
+def plot_postprocess(plot_options, filename="out.png", verbosity=0):
+    if verbosity: print(f"  plotting {plot_options}, {filename}")
     if "show" in plot_options and plot_options["show"]:
         plt.show()
     if "save" in plot_options and plot_options["save"]:
@@ -74,10 +74,15 @@ def run_test (
     #
     # Initial data
     #
-    S_init = Expression ( "C/2-C*abs(x[0]-0.5)", C=325000, degree = 1 )
+    # S_init = Expression ( "C/2-C*abs(x[0]-0.5)", C=325000, degree = 1 )
+    # S_init = Expression ( "C*(abs(x[0]-0.5)<0.3)", C=325000, degree = 1 )
+    S_init = Expression ( "(1-alpha)*C1 + alpha*C1*exp(-50*pow(x[0]-0.5, 2))",
+                          C1=325000, alpha=0, degree = 2 )
     S0 = interpolate(S_init, Vh)
 
-    I_init = Expression ( "C/2-C*abs(x[0]-0.5)", C=7500, degree = 1 )
+    # I_init = Expression ( "C/2-C*abs(x[0]-0.5)", C=7500, degree = 1 )
+    # I_init = Expression ( "abs(x[0]-0.5)<0.2", C=7500, degree = 1 )
+    I_init = Expression ( "C2*exp(-500*pow(x[0]-0.5, 2))", C2=7500, degree = 2 )
     I0 = interpolate(I_init, Vh)
 
     R0 = interpolate( Constant(0), Vh)
@@ -129,7 +134,7 @@ def run_test (
 
     for iter in range(1,n_iter+1):
         t = t+dt
-        print(f'Time setep {iter} (t={t:.3})')
+        if verbosity: print(f'Time step {iter} (t={t:.3})')
 
         solve ( a_S == b_S, S1 )
         solve ( a_I == b_I, I1 )

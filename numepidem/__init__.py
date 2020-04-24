@@ -1,0 +1,2 @@
+import numepidem.SIR_react_diffusion_1d as SIR_react_diffusion_1d
+import numepidem.SIR_react_diffusion_2d as SIR_react_diffusion_2d
