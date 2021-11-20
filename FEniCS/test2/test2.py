@@ -34,10 +34,10 @@ def test_2 ( ):
     from copy import copy
 
     parameters = copy(SIR_scheme.default_parameters)
-    parameters["mesh"] = "./spain_fine.xml"
-    parameters["dt"] = 1.e-1
-    parameters["n_iter"] = 30
-    parameters["beta"] = 5.e-1 # Infection rate
+    parameters["mesh"] = "./spain_xfine.xml"
+    parameters["dt"] = 5.e-2
+    parameters["n_iter"] = 1 #50
+    parameters["beta"] = 1.e-1 # Infection rate
     parameters["mu"] = 0 # Nacimientos
 
     import time
@@ -90,3 +90,8 @@ def test_2 ( ):
 if ( __name__ == '__main__' ):
 
     test_2()
+
+    import vtk_plot
+    vtk_file = "testI000000.vtu"
+    nodes, values = vtk_plot.read_data(vtk_file)
+    vtk_plot.contour_plot(nodes, values, title="I", figsize=(6,5), axis="off")

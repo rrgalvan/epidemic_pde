@@ -1,5 +1,5 @@
 MESHDIR=../mesh
-MESHFILE=spain_finer
+MESHFILE=spain_xxfine
 # MESHFILE=spain_fine
 # MESHFILE=spain_coarse
 # MESHFILE=spain_coarser
